@@ -82,7 +82,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                     isUpdate = false;
                                   });
                                 } else {
-                                  TaskModel model = TaskModel(descricao: descricao.text.toString());
+                                  TaskModel model = TaskModel(descricao: descricao.text.toString(), isFinished: 0);
                                   createTask(model);
                                 }
 
@@ -145,6 +145,13 @@ class _MyHomePageState extends State<MyHomePage> {
                                       deleteTask(listTaskModel[index]);
                                       getListTaskModel();
                                     },
+                                  ),
+                                  IconButton(
+                                    icon: Icon(listTaskModel[index].isFinished == 1 ? Icons.check_box_outlined : Icons.check_box_outline_blank),
+                                    onPressed: () {
+                                      finishTask(listTaskModel[index]);
+                                      getListTaskModel();
+                                    },
                                   )
                                 ],
                               )
@@ -169,6 +176,21 @@ class _MyHomePageState extends State<MyHomePage> {
     });
 
     setState(() {});
+  }
+}
+
+Future<Database> finishTask(TaskModel model) async {
+  try {
+    final Database db = await _getDatabase();
+    model.isFinished == 0 ? model.isFinished = 1 : model.isFinished = 0;
+    await db.update(
+      TABLE_NAME,
+      model.toMap(),
+      where: "id = ?",
+      whereArgs: [model.id],
+    );
+  } catch (ex) {
+    print(ex);
   }
 }
 
