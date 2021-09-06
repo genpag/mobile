@@ -113,7 +113,27 @@ class TodoController extends GetxController {
     final rowsAffected =
         await db.update(_tableName, {'completed': completed ? 1 : 0}, where: 'id = ?', whereArgs: [id]);
 
-    return rowsAffected > 0;
+    final updated = rowsAffected > 0;
+
+    if (updated) {
+      final copyList = [...list];
+      final index = copyList.indexWhere((item) => item.id == id);
+      final item = copyList.removeAt(index);
+
+      // If completed add to the end of list, else, put above completed items
+      if (completed) {
+        copyList.add(item);
+      } else {
+        final newIndex = copyList.lastIndexWhere((item) => !item.completed);
+        copyList.insert(newIndex + 1, item);
+      }
+
+      list.assignAll(copyList);
+
+      await _reorderList();
+    }
+
+    return updated;
   }
 
   void onReorderList(int oldIndex, int newIndex) {
