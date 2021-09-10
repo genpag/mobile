@@ -74,6 +74,15 @@ class TextFieldWidget extends StatelessWidget {
           upperCase: upperCase,
           colorBackgroundField: colorBackgroundField,
         );
+      case TextFieldType.DATE:
+        return _DateFieldWidget(
+          colorsBorder: colorsBorder,
+          value: value,
+          maskController: _maskController,
+          contentPadding: contentPadding,
+          decoration: decoration,
+          colorBackgroundField: colorBackgroundField,
+        );
 
       default:
         return const SizedBox();
@@ -177,6 +186,100 @@ class _TextFieldWidget extends StatelessWidget {
         fontSize: 15,
         color: Colors.black,
       ),
+    );
+  }
+}
+
+class _DateFieldWidget extends StatelessWidget {
+  final dynamic value;
+  final TextEditingController maskController;
+  final Color colorsBorder;
+  final Color colorIconData, colorBackgroundField;
+  final EdgeInsets contentPadding;
+  final InputDecoration decoration;
+
+  final void Function(DateTime) onChange;
+
+  const _DateFieldWidget({
+    @required this.value,
+    @required this.maskController,
+    @required this.colorsBorder,
+    @required this.contentPadding,
+    this.decoration,
+    this.onChange,
+    this.colorIconData,
+    this.colorBackgroundField,
+  });
+
+  Future<void> openDatePicker() async {
+    Get.focusScope?.unfocus();
+
+    final initialValue = value as Rx<DateTime>;
+
+    final result = await showDatePicker(
+      context: Get.context,
+      firstDate: DateTime(1800),
+      lastDate: DateTime(2100),
+      initialDate:
+          initialValue.value == null ? DateTime.now() : initialValue.value,
+    );
+
+    initialValue.value = result;
+    onChange?.call(result);
+    if (initialValue.value != null) {
+      maskController.text = DateFormat('dd/MM/yyyy').format(
+        initialValue.value,
+      );
+    } else {
+      maskController.text = '';
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Flexible(
+          child: InkWell(
+            onTap: openDatePicker,
+            child: TextFormField(
+              controller: maskController,
+              enabled: false,
+              decoration: decoration ??
+                  InputDecoration(
+                    isDense: true,
+                    fillColor: colorBackgroundField,
+                    filled: true,
+                    contentPadding: contentPadding,
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(width: 0, color: colorsBorder),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(width: 0, color: colorsBorder),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    disabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(width: 0, color: colorsBorder),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+              style: const TextStyle(
+                fontSize: 12,
+                letterSpacing: .5,
+                color: Colors.black,
+              ),
+            ),
+          ),
+        ),
+        IconButton(
+          onPressed: openDatePicker,
+          icon: const Icon(Icons.date_range),
+          color: colorIconData ?? const Color(0xFFAABCAA),
+          iconSize: 22,
+          splashRadius: 20,
+        )
+      ],
     );
   }
 }

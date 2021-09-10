@@ -5,6 +5,8 @@ import 'package:mobile/presentation/home/controllers/home.controller.dart';
 import 'package:mobile/presentation/text_field/text_field.widget.dart';
 import 'package:mobile/presentation/text_field/text_field_type.enum.dart';
 
+import 'button_main.widget.dart';
+
 // ignore: must_be_immutable
 class DialogFormWidget extends GetView<HomeController> {
   final TodoModel toDoModel;
@@ -16,30 +18,51 @@ class DialogFormWidget extends GetView<HomeController> {
       insetPadding: EdgeInsets.symmetric(horizontal: 10),
       child: SingleChildScrollView(
         child: Container(
-          height: 300,
+          height: 350,
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(12),
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Cadastrar um novo Todo'),
-                const SizedBox(height: 20),
-                TextFieldWidget(
-                  label: 'Descrição',
-                  type: TextFieldType.TEXT,
-                  value: toDoModel.descricao,
+                Column(
+                  children: [
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: InkWell(
+                        onTap: () => Get.back(),
+                        child: Icon(
+                          Icons.close,
+                          size: 15,
+                        ),
+                      ),
+                    ),
+                    Text(
+                      'Cadastrar um novo Todo',
+                      style: TextStyle(
+                        fontSize: 18,
+                      ),
+                    ),
+                    const SizedBox(height: 25),
+                    TextFieldWidget(
+                      label: 'Descrição',
+                      type: TextFieldType.TEXT,
+                      value: toDoModel.descricao,
+                    ),
+                    const SizedBox(height: 10),
+                    TextFieldWidget(
+                      label: 'Data',
+                      type: TextFieldType.DATE,
+                      value: toDoModel.data,
+                    ),
+                    const SizedBox(height: 10),
+                  ],
                 ),
-                const SizedBox(height: 10),
-                ElevatedButton(
-                  onPressed: () => _selectDate(context),
-                  child: Text('Selecionar data'),
-                ),
-                const SizedBox(height: 10),
-                ElevatedButton(
+                ButtonMainWidget(
                   onPressed: () {
                     controller.salvarTodo(toDoModel);
                     Get.back();
                   },
-                  child: Text('Salvar'),
+                  texto: 'CADASTRAR',
                 ),
               ],
             ),
@@ -47,20 +70,5 @@ class DialogFormWidget extends GetView<HomeController> {
         ),
       ),
     );
-  }
-
-  DateTime selectedDate = DateTime.now();
-
-  Future<void> _selectDate(BuildContext context) async {
-    final DateTime picked = await showDatePicker(
-        context: context,
-        initialDate:
-            toDoModel.data?.value != null ? toDoModel.data.value : selectedDate,
-        firstDate: DateTime(2015, 8),
-        lastDate: DateTime(2101));
-
-    if (picked != null && picked != selectedDate) {
-      toDoModel.data?.value = picked;
-    }
   }
 }

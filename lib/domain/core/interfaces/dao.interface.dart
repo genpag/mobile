@@ -31,16 +31,10 @@ abstract class BaseDao<T> {
     }
   }
 
-  Future<T> selectById(String id) async {
-    var table = await Hive.openBox<T>(T.toString());
-    var key = table.keys.firstWhere((k) => k == id, orElse: () => null);
-    var value = table.get(key ?? '');
-    return value;
-  }
-
   Future<List<T>> select(Function(T value) where) async {
     var table = await Hive.openBox<T>(T.toString());
-    var items = table.values.where(where).toList();
+    var values = table.values.toList();
+    var items = values.where(where).toList();
     return items;
   }
 

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:mobile/domain/todo/models/todo.model.dart';
+import 'package:mobile/presentation/home/controllers/home.controller.dart';
 
 import 'item_todo.widget.dart';
 
-class ListaTarefasWidget extends StatelessWidget {
+class ListaTarefasWidget extends GetView<HomeController> {
   final String tituloLista;
   final bool isExpandido;
   final Function onExpanded;
@@ -45,7 +47,7 @@ class ListaTarefasWidget extends StatelessWidget {
           child: Container(
             constraints: BoxConstraints(maxHeight: 320, minHeight: 10),
             child: ReorderableListView(
-              onReorder: (i, x) {},
+              onReorder: controller.handleReorder,
               buildDefaultDragHandles: false,
               shrinkWrap: true,
               children: [

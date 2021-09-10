@@ -12,8 +12,10 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
   uuid: ^3.0.4
-  intl: ^0.16.0
+  intl: ^0.17.0
   hive: ^1.4.4+1
   path_provider: ^1.6.28
   get: ^3.26.0
@@ -28,5 +30,6 @@ dev_dependencies:
     sdk: flutter
 
 flutter:
+  
 
   uses-material-design: true

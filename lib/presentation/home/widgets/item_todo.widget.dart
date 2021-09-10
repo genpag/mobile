@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:mobile/domain/todo/models/todo.model.dart';
 import 'package:mobile/presentation/home/controllers/home.controller.dart';
 
@@ -58,7 +59,10 @@ class ItemTodoWidget extends GetView<HomeController> {
                           ),
                           const SizedBox(width: 5),
                           Text(
-                            toDo?.data?.value?.toLocal()?.toString() ?? '',
+                            toDo?.data?.value != null
+                                ? DateFormat.yMd('pt_BR')
+                                    .format(toDo?.data?.value)
+                                : '',
                             style: TextStyle(
                               fontSize: 12,
                               decoration: toDo.isRealizado.value
