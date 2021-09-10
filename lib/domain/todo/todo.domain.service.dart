@@ -8,9 +8,10 @@ class TodoDomainService {
   TodoDomainService();
 
   Future<List<TodoModel>> getAllTodo() async {
-    return (await TodoDao().selectAll())
+    final list = (await TodoDao().selectAll())
         .map((e) => TodoModel().fromDao(e))
         .toList();
+    return list;
   }
 
   Future<void> deleteTodo({String id, Function(TodoDao value) where}) async {

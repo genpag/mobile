@@ -11,12 +11,10 @@ class TodoModel extends Model<TodoModel> {
   final Rx<DateTime> data;
   String id;
 
-  @override
-  // ignore: override_on_non_overriding_member
   bool get isValid {
     final descricaoValid =
         descricao.value != null && descricao.value.isNotEmpty;
-    final dataValid = data != null;
+    final dataValid = data.value != null;
 
     return descricaoValid && dataValid;
   }

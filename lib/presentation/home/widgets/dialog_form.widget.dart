@@ -59,7 +59,10 @@ class DialogFormWidget extends GetView<HomeController> {
                 ),
                 ButtonMainWidget(
                   onPressed: () {
-                    controller.salvarTodo(toDoModel);
+                    controller.salvarTodo(
+                      todoModel: toDoModel,
+                      showSnackbar: true,
+                    );
                     Get.back();
                   },
                   texto: 'CADASTRAR',

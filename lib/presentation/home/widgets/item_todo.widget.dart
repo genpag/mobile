@@ -34,7 +34,7 @@ class ItemTodoWidget extends GetView<HomeController> {
                     selected: toDo.isRealizado,
                     onChanged: () {
                       toDo.isRealizado.value = !toDo.isRealizado.value;
-                      controller.salvarTodo(toDo);
+                      controller.salvarTodo(todoModel: toDo);
                     },
                   ),
                   const SizedBox(width: 15),

@@ -32,13 +32,12 @@ class HomeController extends GetxController {
     }
     final TodoModel element = todosList.removeAt(oldIndex);
     todosList.insert(newIndex, element);
-    todosList.map(
-      (e) async {
-        final ordem = todosList.indexOf(e);
-        e.ordem.value = ordem;
-        await salvarTodo(e);
-      },
-    );
+    todosList.forEach((e) async {
+      final ordem = todosList.indexOf(e);
+      e.ordem.value = ordem;
+      await _toDoDomainService.createOrUpdateTodo(e);
+    });
+    await popularListTodo();
   }
 
   void changeisRealizadasExpanded() {
@@ -56,17 +55,22 @@ class HomeController extends GetxController {
 
   Future<void> popularListTodo() async {
     todosList.assignAll(await _toDoDomainService.getAllTodo());
-    todosList.sort((a, b) => b.ordem.value.compareTo(a.ordem.value));
+    todosList.sort((a, b) => a.ordem.value.compareTo(b.ordem.value));
   }
 
-  Future<void> salvarTodo(TodoModel todoModel) async {
+  Future<void> salvarTodo({
+    TodoModel todoModel,
+    bool showSnackbar = false,
+  }) async {
     if (todoModel.isValid) {
       await _toDoDomainService.createOrUpdateTodo(todoModel);
       popularListTodo();
+      if (showSnackbar) {
+        SnackbarUtil.showSuccess(message: 'Cadastro realizado com sucesso.');
+      }
     } else {
       SnackbarUtil.showWarning(message: 'Preencha os campos corretamente.');
     }
-    SnackbarUtil.showSuccess(message: 'Cadastro realizado com sucesso.');
   }
 
   Future<void> removeTodo(TodoModel todoModel) async {

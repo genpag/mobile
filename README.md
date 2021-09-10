@@ -1,16 +1,17 @@
-# mobile
+# GenPag Challenge
 
-A new Flutter project.
+Aplicativo de um simples To-Do em Flutter
 
-## Getting Started
+## Features
 
-This project is a starting point for a Flutter application.
+- CRUD de To-Do
+- Lista de Tarefas Pendentes
+- Lista de Tarefas Concluídas
+- Esconde/Mostrar Listas de Tarefas
+- Reordenação de tarefas
 
-A few resources to get you started if this is your first Flutter project:
+## Libs Utilizadas
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+- GetX para injeção de dependencias, controle de estados, gerenciamento de rotas
+- Hive para a persistência dos dados de modo offline
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
