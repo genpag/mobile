@@ -15,3 +15,7 @@ Aplicativo de um simples To-Do em Flutter
 - GetX para injeção de dependencias, controle de estados, gerenciamento de rotas
 - Hive para a persistência dos dados de modo offline
 
+## Simples demonstração
+
+![Alt Text](http://g.recordit.co/jXI4TGjeIc.gif)
+
