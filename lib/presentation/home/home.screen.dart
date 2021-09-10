@@ -10,7 +10,7 @@ class HomeScreen extends GetView<HomeController> {
     return Scaffold(
       backgroundColor: Colors.white,
       floatingActionButton: FloatingActionButton(
-        onPressed: controller.abrirForm,
+        onPressed: () => controller.abrirForm(null),
         child: Icon(
           Icons.add,
           size: 22,
@@ -36,7 +36,7 @@ class HomeScreen extends GetView<HomeController> {
                   tituloLista: 'Tarefas não realizadas',
                   isExpandido: controller.isNaoRealizadasExpanded.value,
                   onExpanded: controller.changeIsNaoRealizadasExpanded,
-                  tasks: controller.tasks
+                  todoList: controller.todosList
                       .where((e) => !e.isRealizado.value)
                       .toList(),
                 ),
@@ -45,7 +45,7 @@ class HomeScreen extends GetView<HomeController> {
                   tituloLista: 'Tarefas realizadas',
                   isExpandido: controller.isRealizadasExpanded.value,
                   onExpanded: controller.changeisRealizadasExpanded,
-                  tasks: controller.tasks
+                  todoList: controller.todosList
                       .where((e) => e.isRealizado.value)
                       .toList(),
                 ),

@@ -7,13 +7,13 @@ class ListaTarefasWidget extends StatelessWidget {
   final String tituloLista;
   final bool isExpandido;
   final Function onExpanded;
-  final List<TodoModel> tasks;
+  final List<TodoModel> todoList;
 
   const ListaTarefasWidget({
     @required this.tituloLista,
     @required this.isExpandido,
     @required this.onExpanded,
-    @required this.tasks,
+    @required this.todoList,
   });
   @override
   Widget build(BuildContext context) {
@@ -49,16 +49,14 @@ class ListaTarefasWidget extends StatelessWidget {
               buildDefaultDragHandles: false,
               shrinkWrap: true,
               children: [
-                for (int i = 0; i < tasks.length; i++)
+                for (int i = 0; i < todoList.length; i++)
                   Padding(
                     key: ValueKey(i),
                     padding: const EdgeInsets.all(8.0),
                     child: ReorderableDelayedDragStartListener(
                       index: i,
                       child: ItemTodoWidget(
-                        descricaoTask: tasks[i].descricao.value,
-                        dataTask: tasks[i].data.toString(),
-                        isRealizada: tasks[i].isRealizado.value,
+                        toDo: todoList[i],
                       ),
                     ),
                   ),

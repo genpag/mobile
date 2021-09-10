@@ -7,7 +7,7 @@ import 'package:mobile/presentation/home/widgets/dialog_form.widget.dart';
 class HomeController extends GetxController {
   final isNaoRealizadasExpanded = false.obs;
   final isRealizadasExpanded = false.obs;
-  final tasks = RxList<TodoModel>();
+  final todosList = RxList<TodoModel>();
   TodoDomainService _toDoDomainService;
   HomeController({
     @required TodoDomainService toDoDomainService,
@@ -31,17 +31,24 @@ class HomeController extends GetxController {
 
   void atualizarSequencia(int oldI, int newI) {}
 
-  void abrirForm() {
-    final toDoModel = TodoModel.blank(tasks.length);
-    Get.dialog(DialogFormWidget(toDoModel: toDoModel));
+  void abrirForm(TodoModel todoModel) {
+    if (todoModel == null) {
+      todoModel = TodoModel.blank(ordem: todosList.length);
+    }
+    Get.dialog(DialogFormWidget(toDoModel: todoModel));
   }
 
   Future<void> popularListTodo() async {
-    tasks.assignAll(await _toDoDomainService.getAllTodo());
+    todosList.assignAll(await _toDoDomainService.getAllTodo());
   }
 
   Future<void> salvarTodo(TodoModel todoModel) async {
-    await _toDoDomainService.createTodo(todoModel);
+    await _toDoDomainService.createOrUpdateTodo(todoModel);
+    popularListTodo();
+  }
+
+  Future<void> removeTodo(TodoModel todoModel) async {
+    await _toDoDomainService.removeTodo(value: todoModel);
     popularListTodo();
   }
 }

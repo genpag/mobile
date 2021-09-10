@@ -1,6 +1,6 @@
 import 'package:mobile/infrastructure/service/daos/todo.dao.dart';
-import 'package:uuid/uuid.dart';
 import 'package:flutter/foundation.dart';
+import 'package:uuid/uuid.dart';
 
 import 'models/todo.model.dart';
 
@@ -17,16 +17,37 @@ class TodoDomainService {
     await TodoDao().delete(id: id, where: where);
   }
 
-  Future<void> updateTodo({@required index, @required TodoDao value}) async {
-    await TodoDao().update(index: index, value: value);
+  Future<void> updateTodo({@required TodoModel todoModel}) async {
+    await TodoDao().updateWhere(
+      where: (item) => item.id == todoModel.id,
+      value: todoModel.toDao(),
+    );
   }
 
-  Future<void> createTodo(TodoModel todoModel) async {
+  Future<void> removeTodo({@required TodoModel value}) async {
+    await TodoDao().delete(
+      where: (item) => item.id == value.id,
+    );
+  }
+
+  Future<void> createOrUpdateTodo(TodoModel todoModel) async {
     try {
-      String hash = Uuid().v1();
-      await TodoDao().save(id: hash, value: todoModel.toDao());
+      if (todoModel.id == null) {
+        createTodo(todoModel: todoModel);
+      } else {
+        updateTodo(todoModel: todoModel);
+      }
     } catch (e) {
       print("Erro ao salvar Todo no banco de dados: " + e.toString());
+    }
+  }
+
+  Future<void> createTodo({@required TodoModel todoModel}) async {
+    try {
+      todoModel.id = Uuid().v1();
+      await TodoDao().save(id: todoModel.id, value: todoModel.toDao());
+    } catch (e) {
+      rethrow;
     }
   }
 }

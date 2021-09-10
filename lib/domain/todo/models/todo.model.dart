@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mobile/domain/core/interfaces/dao.interface.dart';
 import 'package:mobile/domain/core/interfaces/model.interface.dart';
@@ -8,6 +9,7 @@ class TodoModel extends Model<TodoModel> {
   final Rx<int> ordem;
   final RxString descricao;
   final Rx<DateTime> data;
+  String id;
 
   @override
   // ignore: override_on_non_overriding_member
@@ -24,9 +26,10 @@ class TodoModel extends Model<TodoModel> {
     this.ordem,
     this.descricao,
     this.data,
+    this.id,
   });
 
-  factory TodoModel.blank(int ordem) {
+  factory TodoModel.blank({@required int ordem}) {
     return TodoModel(
       isRealizado: Rx(false),
       ordem: Rx(ordem),
@@ -38,6 +41,7 @@ class TodoModel extends Model<TodoModel> {
   @override
   BaseDao toDao() {
     return TodoDao()
+      ..id = this.id
       ..descricao = this.descricao.value
       ..isRealizado = this.isRealizado.value
       ..ordem = this.ordem.value
@@ -48,6 +52,7 @@ class TodoModel extends Model<TodoModel> {
   TodoModel fromDao(BaseDao b) {
     TodoDao baseDao = b as TodoDao;
     return TodoModel(
+      id: baseDao.id,
       descricao: baseDao.descricao.obs,
       isRealizado: Rx(baseDao.isRealizado),
       ordem: Rx(baseDao.ordem),

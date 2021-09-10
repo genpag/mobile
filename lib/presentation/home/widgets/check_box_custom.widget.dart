@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 
 class CheckboxWidget extends StatelessWidget {
   final Color color;
-  final RxBool selected;
+  final Rx<bool> selected;
   final Function() onChanged;
 
   const CheckboxWidget({

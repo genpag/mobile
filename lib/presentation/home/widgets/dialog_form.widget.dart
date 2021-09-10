@@ -35,7 +35,10 @@ class DialogFormWidget extends GetView<HomeController> {
                 ),
                 const SizedBox(height: 10),
                 ElevatedButton(
-                  onPressed: () => controller.salvarTodo(toDoModel),
+                  onPressed: () {
+                    controller.salvarTodo(toDoModel);
+                    Get.back();
+                  },
                   child: Text('Salvar'),
                 ),
               ],
