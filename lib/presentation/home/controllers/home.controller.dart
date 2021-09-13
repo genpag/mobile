@@ -27,11 +27,15 @@ class HomeController extends GetxController {
   }
 
   Future<void> handleReorder(int oldIndex, int newIndex) async {
-    if (oldIndex < newIndex) {
-      newIndex -= 1;
+    if (newIndex > 0) {
+      newIndex = newIndex - 1;
     }
     final TodoModel element = todosList.removeAt(oldIndex);
-    todosList.insert(newIndex, element);
+    if (newIndex >= todosList.length) {
+      todosList.add(element);
+    } else {
+      todosList.insert(newIndex, element);
+    }
     todosList.forEach((e) async {
       final ordem = todosList.indexOf(e);
       e.ordem.value = ordem;
@@ -44,8 +48,6 @@ class HomeController extends GetxController {
     isRealizadasExpanded.value = !isRealizadasExpanded.value;
   }
 
-  void atualizarSequencia(int oldI, int newI) {}
-
   void abrirForm(TodoModel todoModel) {
     if (todoModel == null) {
       todoModel = TodoModel.blank(ordem: todosList.length);
@@ -55,6 +57,10 @@ class HomeController extends GetxController {
 
   Future<void> popularListTodo() async {
     todosList.assignAll(await _toDoDomainService.getAllTodo());
+    ordenarListTodo();
+  }
+
+  void ordenarListTodo() {
     todosList.sort((a, b) => a.ordem.value.compareTo(b.ordem.value));
   }
 
