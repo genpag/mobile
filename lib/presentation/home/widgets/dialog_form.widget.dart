@@ -63,7 +63,6 @@ class DialogFormWidget extends GetView<HomeController> {
                       todoModel: toDoModel,
                       showSnackbar: true,
                     );
-                    Get.back();
                   },
                   texto: 'CADASTRAR',
                 ),

@@ -73,6 +73,7 @@ class HomeController extends GetxController {
       await _toDoDomainService.createOrUpdateTodo(todoModel);
       popularListTodo();
       if (showSnackbar) {
+        Get.back();
         SnackbarUtil.showSuccess(message: 'Cadastro realizado com sucesso.');
       }
     } else {
