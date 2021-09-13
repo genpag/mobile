@@ -28,8 +28,8 @@ class HomeController extends GetxController {
   }
 
   Future<void> handleReorder(int oldIndex, int newIndex) async {
-    if (newIndex > 0) {
-      newIndex = newIndex - 1;
+    if (oldIndex < newIndex) {
+      newIndex -= 1;
     }
     final TodoModel element = todosList.removeAt(oldIndex);
     if (newIndex >= todosList.length) {
