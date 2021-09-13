@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:mobile/domain/core/utils/snackbar.util.dart';
 import 'package:mobile/domain/todo/models/todo.model.dart';
 import 'package:mobile/domain/todo/todo.domain.service.dart';
+import 'package:mobile/presentation/home/widgets/dialog_confirmar_exclusao.widget.dart';
 import 'package:mobile/presentation/home/widgets/dialog_form.widget.dart';
 
 class HomeController extends GetxController {
@@ -80,13 +81,18 @@ class HomeController extends GetxController {
   }
 
   Future<void> removeTodo(TodoModel todoModel) async {
-    try {
-      await _toDoDomainService.removeTodo(value: todoModel);
-      popularListTodo();
-      SnackbarUtil.showSuccess(message: 'Cadastro removido.');
-    } catch (e) {
-      SnackbarUtil.showError(
-          message: 'Problema interno ao deletar o registro.');
-    }
+    Get.dialog(DialogConfirmarExclusaoWidget(
+      onConfirmar: () async {
+        try {
+          await _toDoDomainService.removeTodo(value: todoModel);
+          popularListTodo();
+          Get.back();
+          SnackbarUtil.showSuccess(message: 'Cadastro removido.');
+        } catch (e) {
+          SnackbarUtil.showError(
+              message: 'Problema interno ao deletar o registro.');
+        }
+      },
+    ));
   }
 }
